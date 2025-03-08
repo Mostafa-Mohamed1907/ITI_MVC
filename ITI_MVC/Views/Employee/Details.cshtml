@@ -1,0 +1,28 @@
+﻿@model Employee
+
+<div class="card" style="width: 18rem;">
+    <img class="card-img-top" src="~/Image/@Model.ImageURL" alt="Card image cap">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Name</h5>
+        <p class="card-text">@Model.JobTitle</p>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">@ViewData["msg"]</li>
+        <li class="list-group-item">@(int.Parse(ViewData["temp"].ToString())-10)</li>
+    </ul>
+    @* <select>
+        @foreach(var item in (List<string>) ViewData["Branches"])
+        {
+            <option>@item</option>
+        }
+    </select> *@
+    <select>
+        @foreach(var item in ViewBag.Branches)
+        {
+            <option>@item</option>
+        }
+    </select>
+    <div class="card-body">
+        <a href="#" class="card-link">Card link</a>
+    </div>
+</div>

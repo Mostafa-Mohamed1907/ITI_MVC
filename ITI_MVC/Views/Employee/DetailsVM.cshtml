@@ -1,0 +1,21 @@
+﻿@model EmpDeptColorTempMsgBrnchViewModel
+
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title" style="color:@Model.Color">@Model.EmpName</h5>
+        <p class="card-text">@Model.DeptName</p>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">@Model.Msg</li>
+        <li class="list-group-item">@Model.Temp</li>
+    </ul>
+    <select>
+        @foreach (var item in Model.Branches)
+        {
+            <option>@item</option>
+        }
+    </select>
+    <div class="card-body">
+        <a href="#" class="card-link">Card link</a>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+﻿@model List<Department>
+
+<table class="table table-bordered table-hover">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Manager Name</th>
+    </tr>
+    @foreach(var item in Model)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.Name</td>
+            <td>@item.ManagerName</td>
+        </tr>
+    }
+</table>
