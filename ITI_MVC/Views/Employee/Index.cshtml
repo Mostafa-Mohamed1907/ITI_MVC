@@ -1,0 +1,28 @@
+﻿@model List<Employee>
+
+<table class="table table-bordered table-hover">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Address</th>
+        <th>JobTitle</th>
+        <th>Salary</th>
+        <th>ImageURL</th>
+        <th>DepartmentID</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.Name</td>
+            <td>@item.Address</td>
+            <td>@item.JobTitle</td>
+            <td>@item.Salary</td>
+            <td>@item.ImageURL</td>
+            <td>@item.DepartmentID</td>
+            <td><a class="btn btn-primary" href="/Employee/Edit/@item.Id" role="button">Edit</a></td>
+        </tr>
+    }
+</table>
+
+@* <a class="btn btn-primary" href="/Employee/Edit" role="button">Edit</a> *@

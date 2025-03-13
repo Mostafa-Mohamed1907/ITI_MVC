@@ -1,0 +1,35 @@
+﻿@model EmpDeptListViewModel
+
+<form method="post" action="/Employee/SaveEdit/@Model.Id">
+    <label>Name</label>
+    <input type="text" value="@Model.Name" id="Name" name="Name" class="form form-control" />
+    <label>Salary</label>
+    <input type="number" value="@Model.Salary" id="Salary" name="Salary" class="form form-control" />
+    <label>JobTitle</label>
+    <input type="text" value="@Model.JobTitle" id="JobTitle" name="JobTitle" class="form form-control" />
+    <label>ImageURL</label>
+    <input type="text" value="@Model.ImageURL" id="ImageURL" name="ImageURL" class="form form-control" />
+    <label>Address</label>
+    <input type="text" value="@Model.Address" id="Address" name="Address" class="form form-control" />
+    <label>DepartmentID</label>
+    <select id="DepartmentID" name="DepartmentID" class="form form-control">
+        @foreach(var deptItemList in Model.DeptList)
+        {
+            if (Model.DepartmentID == deptItemList.Id)
+            {
+                <option value="@deptItemList.Id" selected>@deptItemList.Name</option>
+            }
+           
+            else
+            {
+                <option value="@deptItemList.Id">@deptItemList.Name</option>
+            }
+        }
+    </select>
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <br />
+            <button type="submit" class="btn btn-primary">Edit Employee Data</button>
+        </div>
+    </div>
+</form>
