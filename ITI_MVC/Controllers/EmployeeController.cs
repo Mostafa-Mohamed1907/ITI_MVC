@@ -96,6 +96,43 @@ namespace ITI_MVC.Controllers
 
         }
 
+        [HttpGet]
+        public IActionResult Add()
+        {
+            ViewData["DeptList"] = context.Department.ToList();
+            return View("Add");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SaveAdd(Employee employee)
+        {
+            //Employee employee = new Employee();
+            
+            if (ModelState.IsValid == true)
+            {
+                if (employee.DepartmentID != 0)
+                {
+                    context.Employee.Add(employee);
+                    context.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                ModelState.AddModelError("DepartmentID", "Select Department");
+            }
+            ViewData["DeptList"] = context.Department.ToList();
+            return View("Add", employee);
+        }
+        // Remote Attribute Using Ajax Call
+        public IActionResult CheckName(string name)
+        {
+            if (name.Contains("ITI"))
+            {
+                return Json(true);
+            }
+            return Json(false);
+
+        }
+        
+
     }
 }
 
