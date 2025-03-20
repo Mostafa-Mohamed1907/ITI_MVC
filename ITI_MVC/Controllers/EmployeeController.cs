@@ -1,4 +1,6 @@
-﻿using ITI_MVC.Models;
+﻿using ITI_MVC.Context;
+using ITI_MVC.Models;
+using ITI_MVC.Repository;
 using ITI_MVC.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +9,15 @@ namespace ITI_MVC.Controllers
 {
     public class EmployeeController : Controller
     {
-        ITIContext context = new ITIContext();
+        //ITIContext context = new ITIContext();
+        IDepartmentRepository departmentRepository;
+        IEmployeeRepository employeeRepository;
+        public EmployeeController(IDepartmentRepository _departmentRepository, 
+            IEmployeeRepository _employeeRepository)
+        {
+            departmentRepository = _departmentRepository;
+            employeeRepository = _employeeRepository;
+        }
         public IActionResult Details(int id)
         {
             string msg = "Hello From Action";
@@ -18,7 +28,8 @@ namespace ITI_MVC.Controllers
             Branches.Add("Menofia");
             Branches.Add("Giza");
 
-            Employee empModel = context.Employee.FirstOrDefault(p => p.Id == id);
+            //Employee empModel = context.Employee.FirstOrDefault(p => p.Id == id);
+            Employee empModel = employeeRepository.GetById(id);
             ViewData["msg"] = msg;
             ViewData["temp"] = temp;
             ViewData["Branches"] = Branches;
@@ -36,7 +47,7 @@ namespace ITI_MVC.Controllers
             EmpDeptColorTempMsgBrnchViewModel EmpDeptVM =
                 new EmpDeptColorTempMsgBrnchViewModel();
 
-            Employee empModel = context.Employee.Include("Department").FirstOrDefault(p => p.Id == id);
+            Employee empModel = employeeRepository.GetByIdIncludeDepartment(id);
             EmpDeptVM.EmpName = empModel.Name;
             EmpDeptVM.DeptName = empModel.Department.Name;
 
@@ -48,7 +59,8 @@ namespace ITI_MVC.Controllers
         }
         public IActionResult Index()
         {
-            var employess = context.Employee.ToList();
+            //var employess = context.Employee.ToList();
+            var employess = employeeRepository.GetAll();
             return View("Index", employess);
         }
         //public IActionResult Edit(int id)
@@ -59,9 +71,11 @@ namespace ITI_MVC.Controllers
 
         public IActionResult Edit(int id)
         {
-            Employee employeeModel = context.Employee.FirstOrDefault(E => E.Id == id);
+            //Employee employeeModel = context.Employee.FirstOrDefault(E => E.Id == id);
+            Employee employeeModel = employeeRepository.GetById(id);
             EmpDeptListViewModel EmpDeptListViewMOdel = new EmpDeptListViewModel();
-            List<Department> DepartmentList = context.Department.ToList();
+            //List<Department> DepartmentList = context.Department.ToList();
+            List<Department> DepartmentList = departmentRepository.GetAll();
             EmpDeptListViewMOdel.Id = employeeModel.Id;
             EmpDeptListViewMOdel.Name = employeeModel.Name;
             EmpDeptListViewMOdel.Salary = employeeModel.Salary;
@@ -75,21 +89,24 @@ namespace ITI_MVC.Controllers
 
         public IActionResult SaveEdit(EmpDeptListViewModel EmpDeptFromREquest, int id)
         {
-            Employee EmployeeFromDB = context.Employee.FirstOrDefault(e => e.Id == id);
+            //Employee EmployeeFromDB = context.Employee.FirstOrDefault(e => e.Id == id);
+            Employee EmployeeFromDB = employeeRepository.GetById(id);
             if (EmpDeptFromREquest.Name != null)
             {
                 //if (EmployeeFromDB == null)
                 //{
                 //    return NotFound("Employee not found");
                 //}
-                List<Department> DepartmentList = context.Department.ToList();
+                //List<Department> DepartmentList = context.Department.ToList();
+                List<Department> DepartmentList = departmentRepository.GetAll();
                 EmployeeFromDB.Name = EmpDeptFromREquest.Name;
                 EmployeeFromDB.Salary = EmpDeptFromREquest.Salary;
                 EmployeeFromDB.Address = EmpDeptFromREquest.Address;
                 EmployeeFromDB.ImageURL = EmpDeptFromREquest.ImageURL;
                 EmployeeFromDB.JobTitle = EmpDeptFromREquest.JobTitle;
                 EmployeeFromDB.DepartmentID = EmpDeptFromREquest.DepartmentID;
-                context.SaveChanges();
+                //context.SaveChanges();
+                employeeRepository.Save();
                 return RedirectToAction("Index");
             }
             return View("Edit", EmpDeptFromREquest);
@@ -99,7 +116,8 @@ namespace ITI_MVC.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            ViewData["DeptList"] = context.Department.ToList();
+            //ViewData["DeptList"] = context.Department.ToList();
+            ViewData["DeptList"] = departmentRepository.GetAll();
             return View("Add");
         }
         [HttpPost]
@@ -112,13 +130,16 @@ namespace ITI_MVC.Controllers
             {
                 if (employee.DepartmentID != 0)
                 {
-                    context.Employee.Add(employee);
-                    context.SaveChanges();
+                    //context.Employee.Add(employee);
+                    //context.SaveChanges();
+                    employeeRepository.Add(employee);
+                    employeeRepository.Save();
                     return RedirectToAction("Index");
                 }
                 ModelState.AddModelError("DepartmentID", "Select Department");
             }
-            ViewData["DeptList"] = context.Department.ToList();
+            //ViewData["DeptList"] = context.Department.ToList();
+            ViewData["DeptList"] = departmentRepository.GetAll();
             return View("Add", employee);
         }
         // Remote Attribute Using Ajax Call

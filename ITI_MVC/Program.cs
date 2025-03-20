@@ -1,3 +1,7 @@
+using ITI_MVC.Context;
+using ITI_MVC.Repository;
+using Microsoft.EntityFrameworkCore;
+
 namespace ITI_MVC
 {
     public class Program
@@ -8,6 +12,15 @@ namespace ITI_MVC
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+
+            builder.Services.AddDbContext<ITIContext>(options=>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("CS")));
+
+            //Custom Services:
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
 
             var app = builder.Build();
 

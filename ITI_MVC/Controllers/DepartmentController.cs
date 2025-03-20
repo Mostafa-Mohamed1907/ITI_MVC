@@ -1,15 +1,26 @@
-﻿using ITI_MVC.Models;
+﻿using ITI_MVC.Context;
+using ITI_MVC.Models;
+using ITI_MVC.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ITI_MVC.Controllers
 {
     public class DepartmentController : Controller
     {
-        ITIContext context = new ITIContext();
+        //ITIContext context = new ITIContext();
+        IDepartmentRepository departmentRepository;
+        IEmployeeRepository employeeRepository;
+        public DepartmentController(IDepartmentRepository _departmentRepository
+            , IEmployeeRepository _employeeRepository)
+        {
+            employeeRepository = _employeeRepository;
+            departmentRepository = _departmentRepository;
+        }
         public IActionResult Index()
         {
-            
-            List<Department> dept = context.Department!.ToList();
+
+            //List<Department> dept = context.Department!.ToList();
+            List<Department> dept = departmentRepository.GetAll();
             return View("Index", dept);
         }
 
@@ -21,8 +32,11 @@ namespace ITI_MVC.Controllers
         {
             if (newDeptFromRequest.Name != null)
             {
-                context.Department!.Add(newDeptFromRequest);
-                context.SaveChanges();
+                //context.Department!.Add(newDeptFromRequest);
+                //context.SaveChanges();
+                departmentRepository.Add(newDeptFromRequest);
+                departmentRepository.Save();
+
                 return RedirectToAction("Index");
             }
             return View("Add", newDeptFromRequest);

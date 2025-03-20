@@ -1,4 +1,4 @@
-namespace ITI_MVC.Models
+﻿namespace ITI_MVC.Models
 {
     public class ErrorViewModel
     {
