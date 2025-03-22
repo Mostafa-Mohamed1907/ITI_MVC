@@ -1,9 +1,10 @@
 ﻿using ITI_MVC.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ITI_MVC.Context
 {
-    public class ITIContext:DbContext
+    public class ITIContext:IdentityDbContext<ApplicationUser>
     {
         public ITIContext():base()
         {

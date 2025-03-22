@@ -1,10 +1,12 @@
 ﻿using ITI_MVC.Context;
 using ITI_MVC.Models;
 using ITI_MVC.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ITI_MVC.Controllers
 {
+    [Authorize(Roles ="Admin")]
     public class DepartmentController : Controller
     {
         //ITIContext context = new ITIContext();
@@ -16,6 +18,7 @@ namespace ITI_MVC.Controllers
             employeeRepository = _employeeRepository;
             departmentRepository = _departmentRepository;
         }
+        [Authorize]
         public IActionResult Index()
         {
 

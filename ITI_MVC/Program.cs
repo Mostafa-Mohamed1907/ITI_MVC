@@ -1,6 +1,9 @@
 using ITI_MVC.Context;
+using ITI_MVC.Models;
 using ITI_MVC.Repository;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ITI_MVC
 {
@@ -21,6 +24,9 @@ namespace ITI_MVC
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>().
+                AddEntityFrameworkStores<ITIContext>();
+
 
             var app = builder.Build();
 
@@ -37,6 +43,7 @@ namespace ITI_MVC
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
